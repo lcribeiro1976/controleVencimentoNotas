@@ -1,0 +1,8 @@
+{
+  "name": "controle-vencimento-notas",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix backend",
+    "seed": "npm run seed --prefix backend"
+  }
+}

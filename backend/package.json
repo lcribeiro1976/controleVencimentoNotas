@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dev": "node --watch --disable-warning=ExperimentalWarning src/server.js",
+  "seed": "node --disable-warning=ExperimentalWarning src/seed.js"
   },
   "keywords": [],
   "author": "",
