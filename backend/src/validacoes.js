@@ -68,4 +68,23 @@ function emailValido(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ''));
 }
 
-module.exports = { somenteDigitos, cpfValido, cnpjValido, documentoValido, emailValido };
+// Confere se o texto é uma data real no formato AAAA-MM-DD
+function dataValida(texto) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(texto || ''))) return false;
+  const [ano, mes, dia] = texto.split('-').map(Number);
+  const data = new Date(ano, mes - 1, dia);
+  return data.getFullYear() === ano && data.getMonth() === mes - 1 && data.getDate() === dia;
+}
+
+// Converte um valor em reais para centavos inteiros.
+// Aceita número (150.5) ou texto ("150,50", "1.234,56", "R$ 10,00")
+function paraCentavos(valor) {
+  if (typeof valor === 'number') return Math.round(valor * 100);
+  let texto = String(valor || '').trim().replace('R$', '').trim();
+  if (texto.includes(',')) texto = texto.replace(/\./g, '').replace(',', '.');
+  const numero = Number(texto);
+  if (texto === '' || Number.isNaN(numero)) return NaN;
+  return Math.round(numero * 100);
+}
+
+module.exports = { somenteDigitos, cpfValido, cnpjValido, documentoValido, emailValido, dataValida, paraCentavos };

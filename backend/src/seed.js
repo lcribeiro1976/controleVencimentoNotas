@@ -21,4 +21,24 @@ for (const cliente of clientes) {
   inserir.run(...cliente);
 }
 
+const inserirNota = db.prepare(`
+  INSERT OR IGNORE INTO notas
+    (numero, cliente_id, descricao, data_emissao, data_vencimento, valor_centavos, cancelada)
+  VALUES (?, ?, ?, date('now', 'localtime', ?), date('now', 'localtime', ?), ?, ?)
+`);
+
+// [numero, cliente_id, descricao, emissão, vencimento, valor em centavos, cancelada]
+const notas = [
+  ['NF-001', 1, 'Consultoria mensal',  '-40 days', '-10 days', 150000, 0], // vencida
+  ['NF-002', 2, 'Equipamentos',        '-15 days', '+3 days',  123456, 0], // a vencer
+  ['NF-003', 3, 'Manutenção',          '-5 days',  '+25 days',  48000, 0], // em aberto
+  ['NF-004', 6, 'Sistema de caixa',    '-20 days', '+5 days',   89990, 0], // a vencer
+  ['NF-005', 7, 'Treinamento',         '-60 days', '-30 days',  72000, 0], // vencida
+  ['NF-006', 4, 'Serviço cancelado',   '-10 days', '+20 days',  30000, 1], // cancelada
+];
+
+for (const nota of notas) inserirNota.run(...nota);
+
+console.log('Notas de exemplo inseridas.');
+
 console.log(`${clientes.length} clientes de exemplo processados.`);
